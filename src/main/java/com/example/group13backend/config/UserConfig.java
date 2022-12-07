@@ -25,8 +25,15 @@ public class UserConfig {
                     LocalDate.of(1992, JANUARY, 15)
 
             );
+            Users mary = new Users(
+                    "Mary",
+                    "Smith",
+                    "mary.smith@gmail.com",
+                    LocalDate.of(1985, JULY, 21)
+
+            );
             repository.saveAll(
-                    List.of(jon)
+                    List.of(jon, mary)
             );
         };
     }

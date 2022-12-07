@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServices {
@@ -18,5 +19,13 @@ public class UserServices {
 
     public List<Users> getUsers() {
         return userRepository.findAll();
+    }
+
+    public Optional<Users> getUser(Long userId) {
+        boolean userExists = userRepository.existsById(userId);
+        if(!userExists) {
+            throw new IllegalStateException("User with id " + userId + "does not exist");
+        }
+        return userRepository.findById(userId);
     }
 }
