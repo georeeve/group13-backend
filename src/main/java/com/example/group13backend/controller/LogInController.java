@@ -4,10 +4,12 @@ import com.example.group13backend.annotations.ApiMapping;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @ApiMapping("login")
@@ -18,9 +20,8 @@ public class LogInController {
     public LogInController(UserServices userServices) { this.userServices = userServices; }
 
     @PostMapping
-    public void registerNewUser(@RequestBody User user) {
-        userServices.logInUser(user);
+    public Map<String, String> loginUser(@RequestBody User user) {
+        return Collections.singletonMap("token", userServices.logInUser(user));
     }
-
 }
 

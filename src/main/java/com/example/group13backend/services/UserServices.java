@@ -3,6 +3,7 @@ package com.example.group13backend.services;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
 import com.example.group13backend.utils.Argon2Util;
+import com.example.group13backend.utils.JWTUtil;
 import com.example.group13backend.utils.SnowflakeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,14 @@ public class UserServices {
     private final UserRepository userRepository;
     private final Argon2Util argon2Util;
     private final SnowflakeUtil snowflakeUtil;
+    private final JWTUtil jwtUtil;
+
     @Autowired
-    public UserServices(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil) {
+    public UserServices(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil, JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.argon2Util = argon2Util;
         this.snowflakeUtil = snowflakeUtil;
+        this.jwtUtil = jwtUtil;
     }
 
     public List<User> getAllUsers() {
@@ -100,12 +104,13 @@ public class UserServices {
         }
     }
 
-    public void logInUser(User user) {
+    public String logInUser(User user) {
         User dbUser = userRepository.findUsersByEmail(user.getEmail())
-                .orElseThrow(() -> new IllegalStateException("user is not registered"));
+                .orElseThrow(() -> new IllegalStateException("username or password is incorrect"));
 
         if (argon2Util.verify(user.getPassword(), dbUser.getPassword())) {
-           //token stuff
+           return jwtUtil.sign(dbUser.getId());
         }
+        throw new IllegalStateException("username or password is incorrect");
     }
 }
