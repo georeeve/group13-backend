@@ -34,4 +34,15 @@ public class UserController {
     public void deleteUserById(@PathVariable("userId") Long id) {
         userServices.deleteUserById(id);
     }
+
+    @PutMapping(path = "{userId}")
+    public void updateUserById(
+            @PathVariable("userId") Long id,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String password
+    ) {
+        userServices.updateUserById(id, firstName, lastName,email,password);
+    }
 }
