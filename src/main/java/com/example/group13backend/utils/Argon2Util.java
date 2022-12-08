@@ -11,4 +11,8 @@ public class Argon2Util {
     public String hash(String password) {
         return encoder.encode(password);
     }
+
+    public boolean verify(String password, String hash) {
+        return encoder.matches(password, hash);
+    }
 }
