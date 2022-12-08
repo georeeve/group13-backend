@@ -20,7 +20,7 @@ public class UserController {
     public UserController(UserServices userServices) { this.userServices = userServices; }
 
     @GetMapping
-    public List<Users> getUsers() { return userServices.getUsers(); }
+    public List<Users> getUsers() { return userServices.getAllUsers(); }
 
     @GetMapping(path = "{userId}")
     public Optional<Users> getUser(@PathVariable("userId") Long userId) {
