@@ -6,7 +6,9 @@ import com.example.group13backend.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -26,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public void registerNewUser(@RequestBody User user) {
-        userServices.addNewUser(user);
+    public Map<String, String> registerNewUser(@RequestBody User user) {
+        return Collections.singletonMap("token", userServices.addNewUser(user));
     }
 
     @DeleteMapping(path = "{userId}")

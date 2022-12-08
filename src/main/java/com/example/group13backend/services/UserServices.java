@@ -42,7 +42,7 @@ public class UserServices {
     }
 
 
-    public void addNewUser(User user) {
+    public String addNewUser(User user) {
         Optional<User> userOptional = userRepository.findUsersByEmail(user.getEmail());
         if(userOptional.isPresent()) {
             throw new IllegalStateException("email taken");
@@ -51,6 +51,7 @@ public class UserServices {
         user.setId(snowflakeUtil.newId());
 
         userRepository.save(user);
+        return jwtUtil.sign(user.getId());
     }
 
     public void deleteUserById(Long id) {
