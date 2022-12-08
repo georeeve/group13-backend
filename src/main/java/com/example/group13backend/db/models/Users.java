@@ -22,6 +22,7 @@ public class Users {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     private LocalDate dob;
 
     //address
@@ -29,18 +30,21 @@ public class Users {
     public Users() {
     }
 
-    public Users(Long id, String firstName, String lastName, String email, LocalDate dob) {
+    public Users(Long id, String firstName, String lastName, String email, String password, LocalDate dob) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.dob = dob;
     }
 
-    public Users(String firstName, String lastName, String email, LocalDate dob) {
+
+    public Users(String firstName, String lastName, String email, String password, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.dob = dob;
     }
 
@@ -56,6 +60,10 @@ public class Users {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
     public LocalDate getDob() { return dob; }
     public void setDob(LocalDate dob) { this.dob = dob; }
 
@@ -63,24 +71,28 @@ public class Users {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Users user = (Users) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(dob, user.dob);
+        Users users = (Users) o;
+        return Objects.equals(id, users.id) &&
+                Objects.equals(firstName, users.firstName) &&
+                Objects.equals(lastName, users.lastName) &&
+                Objects.equals(email, users.email) &&
+                Objects.equals(password, users.password) &&
+                Objects.equals(dob, users.dob);
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, dob);
+        return Objects.hash(id, firstName, lastName, email, password, dob);
     }
+
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
+        return "Users{" +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", dob=" + dob +
                 '}';
     }
