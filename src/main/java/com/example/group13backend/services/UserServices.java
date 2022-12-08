@@ -28,4 +28,12 @@ public class UserServices {
         }
         return userRepository.findById(userId);
     }
+
+    public void addNewUser(Users users) {
+        Optional<Users> usersOptional = userRepository.findUsersByEmail(users.getEmail());
+        if(usersOptional.isPresent()) {
+            throw new IllegalStateException("email taken");
+        }
+        userRepository.save(users);
+    }
 }
