@@ -30,13 +30,17 @@ public class User {
         this.dob = dob;
     }
 
-
     public User(String firstName, String lastName, String email, String password, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.dob = dob;
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() { return id; }

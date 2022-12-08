@@ -39,8 +39,8 @@ public class UserServices {
 
 
     public void addNewUser(User user) {
-        Optional<User> usersOptional = userRepository.findUsersByEmail(user.getEmail());
-        if(usersOptional.isPresent()) {
+        Optional<User> userOptional = userRepository.findUsersByEmail(user.getEmail());
+        if(userOptional.isPresent()) {
             throw new IllegalStateException("email taken");
         }
         user.setPassword(argon2Util.hash(user.getPassword()));
@@ -97,6 +97,15 @@ public class UserServices {
                 password.length() > 6 //throw error if too short
         ) {
             user.setPassword(argon2Util.hash(password));
+        }
+    }
+
+    public void logInUser(User user) {
+        User dbUser = userRepository.findUsersByEmail(user.getEmail())
+                .orElseThrow(() -> new IllegalStateException("user is not registered"));
+
+        if (argon2Util.verify(user.getPassword(), dbUser.getPassword())) {
+           //token stuff
         }
     }
 }
