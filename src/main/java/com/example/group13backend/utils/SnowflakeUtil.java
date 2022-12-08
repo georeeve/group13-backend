@@ -18,7 +18,7 @@ public class SnowflakeUtil {
     private final SnowflakeIdGenerator snowflakeIdGenerator = SnowflakeIdGenerator
             .createCustom(0, timeSource, structure, options);
 
-    public String newId() {
-        return Long.toString(snowflakeIdGenerator.next());
+    public Long newId() {
+        return snowflakeIdGenerator.next();
     }
 }
