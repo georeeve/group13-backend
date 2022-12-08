@@ -5,9 +5,9 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity
-@Table
-public class Users {
+@Entity(name = "Users")
+@Table(name = "Users")
+public class User {
     @Id
     private Long id;
     private String firstName;
@@ -18,10 +18,10 @@ public class Users {
 
     //address
 
-    public Users() {
+    public User() {
     }
 
-    public Users(Long id, String firstName, String lastName, String email, String password, LocalDate dob) {
+    public User(Long id, String firstName, String lastName, String email, String password, LocalDate dob) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +31,7 @@ public class Users {
     }
 
 
-    public Users(String firstName, String lastName, String email, String password, LocalDate dob) {
+    public User(String firstName, String lastName, String email, String password, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -62,13 +62,13 @@ public class Users {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return Objects.equals(id, users.id) &&
-                Objects.equals(firstName, users.firstName) &&
-                Objects.equals(lastName, users.lastName) &&
-                Objects.equals(email, users.email) &&
-                Objects.equals(password, users.password) &&
-                Objects.equals(dob, users.dob);
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(dob, user.dob);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Users {
 
     @Override
     public String toString() {
-        return "Users{" +
+        return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

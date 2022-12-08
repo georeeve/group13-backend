@@ -1,6 +1,6 @@
 package com.example.group13backend.services;
 
-import com.example.group13backend.db.models.Users;
+import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
 import com.example.group13backend.utils.Argon2Util;
 import com.example.group13backend.utils.SnowflakeUtil;
@@ -23,11 +23,11 @@ public class UserServices {
         this.snowflakeUtil = snowflakeUtil;
     }
 
-    public List<Users> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public Optional<Users> getUser(Long userId) {
+    public Optional<User> getUser(Long userId) {
         boolean userExists = userRepository.existsById(userId);
         if(!userExists) {
             throw new IllegalStateException("User with id " + userId + "does not exist");
@@ -36,14 +36,23 @@ public class UserServices {
     }
 
 
-    public void addNewUser(Users users) {
-        Optional<Users> usersOptional = userRepository.findUsersByEmail(users.getEmail());
+    public void addNewUser(User user) {
+        Optional<User> usersOptional = userRepository.findUsersByEmail(user.getEmail());
         if(usersOptional.isPresent()) {
             throw new IllegalStateException("email taken");
         }
-        users.setPassword(argon2Util.hash(users.getPassword()));
-        users.setId(snowflakeUtil.newId());
+        user.setPassword(argon2Util.hash(user.getPassword()));
+        user.setId(snowflakeUtil.newId());
 
-        userRepository.save(users);
+        userRepository.save(user);
+    }
+
+    public void deleteUserById(Long id) {
+        Optional<User> usersOptional = userRepository.findById(id);
+        boolean userExists = userRepository.existsById(id);
+        if (!userExists) {
+            throw new IllegalStateException("Student with id " + id + " does not exist");
+        }
+        userRepository.deleteById(id);
     }
 }
