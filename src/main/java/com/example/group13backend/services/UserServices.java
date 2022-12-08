@@ -3,6 +3,7 @@ package com.example.group13backend.services;
 import com.example.group13backend.db.models.Users;
 import com.example.group13backend.db.repository.UserRepository;
 import com.example.group13backend.utils.Argon2Util;
+import com.example.group13backend.utils.SnowflakeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class UserServices {
     private final UserRepository userRepository;
     private final Argon2Util argon2Util;
+    private final SnowflakeUtil snowflakeUtil;
     @Autowired
-    public UserServices(UserRepository userRepository, Argon2Util argon2Util) {
+    public UserServices(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil) {
         this.userRepository = userRepository;
         this.argon2Util = argon2Util;
+        this.snowflakeUtil = snowflakeUtil;
     }
 
     public List<Users> getAllUsers() {
@@ -39,6 +42,7 @@ public class UserServices {
             throw new IllegalStateException("email taken");
         }
         users.setPassword(argon2Util.hash(users.getPassword()));
+        users.setId(snowflakeUtil.newId());
 
         userRepository.save(users);
     }
