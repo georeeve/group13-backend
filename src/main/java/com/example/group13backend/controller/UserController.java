@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @ApiMapping("users")
@@ -23,7 +22,7 @@ public class UserController {
     public List<User> getAllUsers() { return userServices.getAllUsers(); }
 
     @GetMapping(path = "{userId}")
-    public Optional<User> getUser(@PathVariable("userId") Long userId) {
+    public User getUser(@PathVariable("userId") Long userId) {
         return userServices.getUser(userId);
     }
 

@@ -2,6 +2,8 @@ package com.example.group13backend.services;
 
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
+import com.example.group13backend.logging.ErrorMessage;
+import com.example.group13backend.logging.Logger;
 import com.example.group13backend.utils.Argon2Util;
 import com.example.group13backend.utils.JWTUtil;
 import com.example.group13backend.utils.SnowflakeUtil;
@@ -20,32 +22,35 @@ public class UserServices {
     private final Argon2Util argon2Util;
     private final SnowflakeUtil snowflakeUtil;
     private final JWTUtil jwtUtil;
+    private final Logger logger;
 
     @Autowired
-    public UserServices(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil, JWTUtil jwtUtil) {
+    public UserServices(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil, JWTUtil jwtUtil, Logger logger) {
         this.userRepository = userRepository;
         this.argon2Util = argon2Util;
         this.snowflakeUtil = snowflakeUtil;
         this.jwtUtil = jwtUtil;
+        this.logger = logger;
     }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUser(Long userId) {
-        boolean userExists = userRepository.existsById(userId);
-        if(!userExists) {
-            throw new IllegalStateException("User with id " + userId + "does not exist");
+    public User getUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            logger.error(ErrorMessage.USER_NOT_FOUND);
+            return null;
         }
-        return userRepository.findById(userId);
+        return user.get();
     }
 
 
     public String addNewUser(User user) {
-        Optional<User> userOptional = userRepository.findUsersByEmail(user.getEmail());
-        if(userOptional.isPresent()) {
-            throw new IllegalStateException("email taken");
+        if (userRepository.findUsersByEmail(user.getEmail()).isPresent()) {
+            logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
+            return null;
         }
         user.setPassword(argon2Util.hash(user.getPassword()));
         user.setId(snowflakeUtil.newId());
@@ -55,10 +60,10 @@ public class UserServices {
     }
 
     public void deleteUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException(
-                        "User with id " + id + " does not exist"
-                ));
+        if (userRepository.findById(id).isEmpty()) {
+            logger.error(ErrorMessage.USER_NOT_FOUND);
+            return;
+        }
         userRepository.deleteById(id);
     }
 
@@ -70,11 +75,13 @@ public class UserServices {
             String email,
             String password
     ) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException(
-                        "User with id " + id + " does not exist"
-                ));
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            logger.error(ErrorMessage.USER_NOT_FOUND);
+            return;
+        }
 
+        User user = userOptional.get();
         if (firstName != null &&
                 firstName.length() > 0 &&
                 !Objects.equals(user.getFirstName(), firstName)
@@ -93,8 +100,10 @@ public class UserServices {
                 email.length() > 0 &&
                 !Objects.equals(user.getEmail(), email)
         ) {
-            User emailExist = userRepository.findUsersByEmail(email)
-                    .orElseThrow(() -> new IllegalStateException("email taken"));
+            if (userRepository.findUsersByEmail(email).isPresent()) {
+                logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
+                return;
+            }
             user.setEmail(email);
         }
 
@@ -106,12 +115,17 @@ public class UserServices {
     }
 
     public String logInUser(User user) {
-        User dbUser = userRepository.findUsersByEmail(user.getEmail())
-                .orElseThrow(() -> new IllegalStateException("username or password is incorrect"));
+        Optional<User> dbUserOptional = userRepository.findUsersByEmail(user.getEmail());
+        if (dbUserOptional.isEmpty()) {
+            logger.error(ErrorMessage.USERNAME_OR_PASSWORD_INCORRECT);
+            return null;
+        }
 
+        User dbUser = dbUserOptional.get();
         if (argon2Util.verify(user.getPassword(), dbUser.getPassword())) {
            return jwtUtil.sign(dbUser.getId());
         }
-        throw new IllegalStateException("username or password is incorrect");
+        logger.error(ErrorMessage.USERNAME_OR_PASSWORD_INCORRECT);
+        return null;
     }
 }
