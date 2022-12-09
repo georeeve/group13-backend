@@ -19,6 +19,7 @@ import static java.time.Month.*;
 public class UserConfig {
     private final SnowflakeUtil snowflakeUtil;
     private final Argon2Util argon2Util;
+
     @Autowired
     public UserConfig(SnowflakeUtil snowflakeUtil, Argon2Util argon2Util) {
         this.snowflakeUtil = snowflakeUtil;
