@@ -15,10 +15,14 @@ public class ItemController {
     private final ItemServices itemServices;
 
     @Autowired
-    public ItemController(ItemServices itemServices) { this.itemServices = itemServices; }
+    public ItemController(ItemServices itemServices) {
+        this.itemServices = itemServices;
+    }
 
     @GetMapping
-    public List<Item> getAllItems() { return  itemServices.geAllItems(); }
+    public List<Item> getAllItems() {
+        return itemServices.geAllItems();
+    }
 
     @GetMapping(path = "{itemId}")
     public Item getItemById(@PathVariable("itemId") Long itemId) {
@@ -28,11 +32,18 @@ public class ItemController {
     @PutMapping(path = "{itemId}")
     public void updateItemById(
             @PathVariable("itemId") Long itemId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) Integer quantity,
-            @RequestParam(required = false) Double price
-            ) {
-        itemServices.updateItemById(itemId, name, description, quantity, price);
+            @RequestBody Item newItem
+    ) {
+        itemServices.updateItemById(itemId, newItem);
     }
+
+//    public void updateItemById(
+//            @PathVariable("itemId") Long itemId,
+//            @RequestParam(required = false) String name,
+//            @RequestParam(required = false) String description,
+//            @RequestParam(required = false) Integer quantity,
+//            @RequestParam(required = false) Double price
+//    ) {
+//        itemServices.updateItemById(itemId, name, description, quantity, price);
+//    }
 }

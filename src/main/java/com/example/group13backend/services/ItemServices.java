@@ -33,17 +33,13 @@ public class ItemServices {
             logger.error(ErrorMessage.ITEM_NOT_FOUND);
             return null;
         }
-
         return item.get();
     }
 
     @Transactional
     public void updateItemById(
             Long itemId,
-            String name,
-            String description,
-            Integer quantity,
-            Double price
+            Item newItem
     ) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isEmpty()) {
@@ -51,25 +47,43 @@ public class ItemServices {
             return;
         }
 
-        Item item = itemOptional.get();
-        if (name != null &&
-                name.length() > 0 &&
-                !Objects.equals(item.getName(), name)
+        Item oldItem = itemOptional.get();
+
+        if (newItem.getName() != null &&
+                newItem.getName().length() > 0 &&
+                !Objects.equals(oldItem.getName(), newItem.getName())
         ) {
-            item.setName(name);
+            oldItem.setName(newItem.getName());
         }
 
-        if (description != null &&
-                description.length() > 0 &&
-                !Objects.equals(item.getDescription(), description)
+        if (newItem.getDescription() != null &&
+                newItem.getDescription().length() > 0 &&
+                !Objects.equals(oldItem.getDescription(), newItem.getDescription())
         ) {
-            if (description.length() > 200) {
+            if (newItem.getDescription().length() > 200) {
                 logger.error(ErrorMessage.DESCRIPTION_TOO_LONG);
                 return;
             }
-            item.setDescription(description);
+            oldItem.setDescription(newItem.getDescription());
         }
 
+        if (newItem.getQuantity() != null &&
+                !Objects.equals(oldItem.getQuantity(), newItem.getQuantity())
+        ) {
+            if (newItem.getQuantity() < 0) {
+                logger.error(ErrorMessage.QUANTITY_INVALID);
+            }
+            oldItem.setQuantity(newItem.getQuantity());
+        }
+
+        if (newItem.getPrice() != null &&
+                !Objects.equals(oldItem.getPrice(), newItem.getPrice())
+        ) {
+            if (newItem.getPrice() < 0) {
+                logger.error(ErrorMessage.PRICE_INVALID);
+            }
+            oldItem.setPrice(newItem.getPrice());
+        }
 
     }
 }
