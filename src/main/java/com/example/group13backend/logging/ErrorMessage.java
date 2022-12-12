@@ -10,10 +10,12 @@ public enum ErrorMessage {
     PASSWORD_TOO_SHORT(HttpStatus.BAD_REQUEST, "Password must be greater than 8 characters long"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User is not found"),
     EMAIL_ALREADY_REGISTERED(HttpStatus.FORBIDDEN, "User is already registered"),
-    USERNAME_OR_PASSWORD_INCORRECT(HttpStatus.FORBIDDEN, "Username or password is incorrect");
-
+    USERNAME_OR_PASSWORD_INCORRECT(HttpStatus.FORBIDDEN, "Username or password is incorrect"),
+    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item is not found"),
+    DESCRIPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "Description longer than 200 characters");
     private final HttpStatus statusCode;
     private final String message;
+
     ErrorMessage(HttpStatus statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
