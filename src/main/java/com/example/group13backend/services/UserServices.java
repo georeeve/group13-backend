@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,19 +30,6 @@ public class UserServices {
         this.snowflakeUtil = snowflakeUtil;
         this.jwtUtil = jwtUtil;
         this.logger = logger;
-    }
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public User getUser(Long userId) {
-        final var user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            logger.error(ErrorMessage.USER_NOT_FOUND);
-            return null;
-        }
-        return user.get();
     }
 
     public User getCurrentUser(String authorization) {
@@ -67,7 +53,7 @@ public class UserServices {
     }
 
 
-    public String addNewUser(User user) {
+    public String newUser(User user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getFirstName() == null
                 || user.getLastName() == null || user.getDob() == null) {
             logger.error(ErrorMessage.NULL_VALUE);
@@ -105,7 +91,7 @@ public class UserServices {
     }
 
     @Transactional
-    public void updateUserById(
+    public void patchUserById(
             Long userId,
             User newUser
     ) {
@@ -171,7 +157,7 @@ public class UserServices {
         }
     }
 
-    public String logInUser(User user) {
+    public String newSession(User user) {
         Optional<User> dbUserOptional = userRepository.findUsersByEmail(user.getEmail());
         if (dbUserOptional.isEmpty()) {
             logger.error(ErrorMessage.USERNAME_OR_PASSWORD_INCORRECT);
