@@ -3,6 +3,8 @@ package com.example.group13backend.controller;
 import com.example.group13backend.annotations.ApiMapping;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.services.UserServices;
+import com.example.group13backend.views.PublicView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ public class UserController {
     }
 
     @GetMapping
+    @JsonView(PublicView.class)
     public List<User> getAllUsers() {
         return userServices.getAllUsers();
     }
@@ -42,6 +45,7 @@ public class UserController {
     }
 
     @GetMapping(path = "{userId}")
+    @JsonView(PublicView.class)
     public User getUser(@PathVariable("userId") Long userId) {
         return userServices.getUser(userId);
     }

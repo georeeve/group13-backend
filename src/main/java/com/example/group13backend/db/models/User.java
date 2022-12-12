@@ -1,6 +1,10 @@
 package com.example.group13backend.db.models;
 
-import jakarta.persistence.*;
+import com.example.group13backend.views.PublicView;
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -9,25 +13,26 @@ import java.util.Objects;
 @Table(name = "Users")
 public class User {
     @Id
+    @JsonView(PublicView.class)
     private Long id;
+
+    @JsonView(PublicView.class)
     private String firstName;
+
+    @JsonView(PublicView.class)
     private String lastName;
+
+    @JsonView(PublicView.class)
     private String email;
+
     private String password;
+
+    @JsonView(PublicView.class)
     private LocalDate dob;
 
     //address
 
     public User() {
-    }
-
-    public User(Long id, String firstName, String lastName, String email, String password, LocalDate dob) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.dob = dob;
     }
 
     public User(String firstName, String lastName, String email, String password, LocalDate dob) {
@@ -36,11 +41,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.dob = dob;
-    }
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
     }
 
     public Long getId() { return id; }
