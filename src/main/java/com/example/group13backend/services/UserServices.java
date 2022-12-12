@@ -38,7 +38,27 @@ public class UserServices {
     }
 
     public User getUser(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
+        final var user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            logger.error(ErrorMessage.USER_NOT_FOUND);
+            return null;
+        }
+        return user.get();
+    }
+
+    public User getCurrentUser(String authorization) {
+        final var tokenSplit = authorization.split("Bearer ");
+        if (tokenSplit.length != 2) {
+            logger.error(ErrorMessage.TOKEN_INVALID);
+            return null;
+        }
+        final var token = tokenSplit[1];
+        final var id = jwtUtil.verify(token);
+        if (id == null) {
+            logger.error(ErrorMessage.TOKEN_INVALID);
+            return null;
+        }
+        final var user = userRepository.findById(id);
         if (user.isEmpty()) {
             logger.error(ErrorMessage.USER_NOT_FOUND);
             return null;
