@@ -16,10 +16,14 @@ public class UserController {
     private final UserServices userServices;
 
     @Autowired
-    public UserController(UserServices userServices) { this.userServices = userServices; }
+    public UserController(UserServices userServices) {
+        this.userServices = userServices;
+    }
 
     @GetMapping
-    public List<User> getAllUsers() { return userServices.getAllUsers(); }
+    public List<User> getAllUsers() {
+        return userServices.getAllUsers();
+    }
 
     @GetMapping(path = "{userId}")
     public User getUser(@PathVariable("userId") Long userId) {
@@ -38,12 +42,9 @@ public class UserController {
 
     @PutMapping(path = "{userId}")
     public void updateUserById(
-            @PathVariable("userId") Long id,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String password
+            @PathVariable("userId") Long userId,
+            @RequestBody User newUser
     ) {
-        userServices.updateUserById(id, firstName, lastName,email,password);
+        userServices.updateUserById(userId, newUser);
     }
 }

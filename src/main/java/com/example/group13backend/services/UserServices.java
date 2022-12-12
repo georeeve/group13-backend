@@ -49,7 +49,7 @@ public class UserServices {
 
     public String addNewUser(User user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getFirstName() == null
-            || user.getLastName() == null || user.getDob() == null) {
+                || user.getLastName() == null || user.getDob() == null) {
             logger.error(ErrorMessage.NULL_VALUE);
             return null;
         }
@@ -86,69 +86,68 @@ public class UserServices {
 
     @Transactional
     public void updateUserById(
-            Long id,
-            String firstName,
-            String lastName,
-            String email,
-            String password
+            Long userId,
+            User newUser
     ) {
-        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             logger.error(ErrorMessage.USER_NOT_FOUND);
             return;
         }
-        if (firstName != null) {
-            if (firstName.length() == 0) {
+
+        if (newUser.getFirstName() != null) {
+            if (newUser.getFirstName().length() == 0) {
                 logger.error(ErrorMessage.NAME_INVALID);
                 return;
             }
         }
-        if (lastName != null) {
-            if (lastName.length() == 0) {
+        if (newUser.getLastName() != null) {
+            if (newUser.getLastName().length() == 0) {
                 logger.error(ErrorMessage.NAME_INVALID);
                 return;
             }
         }
 
-        if (email != null) {
-            if (!email.contains("@")) {
+        if (newUser.getEmail() != null) {
+            if (!newUser.getEmail().contains("@")) {
                 logger.error(ErrorMessage.EMAIL_INVALID);
                 return;
             }
         }
 
-        if (password != null) {
-            if (password.length() <= 8) {
+        if (newUser.getPassword() != null) {
+            if (newUser.getPassword().length() <= 8) {
                 logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
                 return;
             }
         }
 
-        User user = userOptional.get();
-        if (firstName != null &&
-                !Objects.equals(user.getFirstName(), firstName)
+        User oldUser = userOptional.get();
+
+        if (newUser.getFirstName() != null &&
+                !Objects.equals(oldUser.getFirstName(), newUser.getFirstName())
         ) {
-            user.setFirstName(firstName);
+            oldUser.setFirstName(newUser.getFirstName());
         }
 
-        if (lastName != null &&
-                !Objects.equals(user.getLastName(), lastName)
+        if (newUser.getLastName() != null &&
+                !Objects.equals(oldUser.getLastName(), newUser.getLastName())
         ) {
-            user.setLastName(lastName);
+            oldUser.setLastName(newUser.getLastName());
         }
 
-        if (email != null &&
-                !Objects.equals(user.getEmail(), email)
+        if (newUser.getEmail() != null &&
+                !Objects.equals(oldUser.getEmail(), newUser.getEmail())
         ) {
-            if (userRepository.findUsersByEmail(email).isPresent()) {
+            if (userRepository.findUsersByEmail(newUser.getEmail()).isPresent()) {
                 logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
                 return;
             }
-            user.setEmail(email);
+            oldUser.setEmail(newUser.getEmail());
         }
 
-        if (password != null && !argon2Util.verify(password, user.getPassword())) {
-            user.setPassword(argon2Util.hash(password));
+        if (newUser.getPassword() != null && !argon2Util.verify(newUser.getPassword(), oldUser.getPassword())) {
+            oldUser.setPassword(argon2Util.hash(newUser.getPassword()));
         }
     }
 
@@ -161,7 +160,7 @@ public class UserServices {
 
         User dbUser = dbUserOptional.get();
         if (argon2Util.verify(user.getPassword(), dbUser.getPassword())) {
-           return jwtUtil.sign(dbUser.getId());
+            return jwtUtil.sign(dbUser.getId());
         }
         logger.error(ErrorMessage.USERNAME_OR_PASSWORD_INCORRECT);
         return null;
