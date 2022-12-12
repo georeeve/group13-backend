@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @Service
-public class UserServices {
+public class UserService {
     private final UserRepository userRepository;
     private final Argon2Util argon2Util;
     private final SnowflakeUtil snowflakeUtil;
@@ -24,7 +24,7 @@ public class UserServices {
     private final Logger logger;
 
     @Autowired
-    public UserServices(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil, JWTUtil jwtUtil, Logger logger) {
+    public UserService(UserRepository userRepository, Argon2Util argon2Util, SnowflakeUtil snowflakeUtil, JWTUtil jwtUtil, Logger logger) {
         this.userRepository = userRepository;
         this.argon2Util = argon2Util;
         this.snowflakeUtil = snowflakeUtil;
@@ -53,7 +53,7 @@ public class UserServices {
     }
 
 
-    public String newUser(User user) {
+    public String createUser(User user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getFirstName() == null
                 || user.getLastName() == null || user.getDob() == null) {
             logger.error(ErrorMessage.NULL_VALUE);
@@ -155,20 +155,5 @@ public class UserServices {
         if (newUser.getPassword() != null && !argon2Util.verify(newUser.getPassword(), oldUser.getPassword())) {
             oldUser.setPassword(argon2Util.hash(newUser.getPassword()));
         }
-    }
-
-    public String newSession(User user) {
-        Optional<User> dbUserOptional = userRepository.findUsersByEmail(user.getEmail());
-        if (dbUserOptional.isEmpty()) {
-            logger.error(ErrorMessage.USERNAME_OR_PASSWORD_INCORRECT);
-            return null;
-        }
-
-        User dbUser = dbUserOptional.get();
-        if (argon2Util.verify(user.getPassword(), dbUser.getPassword())) {
-            return jwtUtil.sign(dbUser.getId());
-        }
-        logger.error(ErrorMessage.USERNAME_OR_PASSWORD_INCORRECT);
-        return null;
     }
 }
