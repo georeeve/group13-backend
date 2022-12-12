@@ -16,21 +16,21 @@ public class UserConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserServices userServices) {
         return args -> {
-            userServices.addNewUser(new User(
+            userServices.newUser(new User(
                     "Jon",
                     "James",
                     "jon.james@gmail.com",
                     "testing123",
                     LocalDate.of(1992, JANUARY, 15)
             ));
-            userServices.addNewUser(new User(
+            userServices.newUser(new User(
                     "Mary",
                     "Smith",
                     "mary.smith@gmail.com",
                     "testing123",
                     LocalDate.of(1985, JULY, 21)
             ));
-            userServices.addNewUser(new User(
+            userServices.newUser(new User(
                     "Bill",
                     "Nelson",
                     "bill.nelson@gmail.com",
