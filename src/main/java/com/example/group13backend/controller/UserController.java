@@ -25,14 +25,25 @@ public class UserController {
         return userServices.getAllUsers();
     }
 
-    @GetMapping(path = "{userId}")
-    public User getUser(@PathVariable("userId") Long userId) {
-        return userServices.getUser(userId);
+    @DeleteMapping
+    public void deleteCurrentUser(@RequestHeader("Authorization") String authorization) {
+        final var user = userServices.getCurrentUser(authorization);
+        userServices.deleteUserById(user.getId());
     }
 
     @PostMapping(path = "/register")
-    public Map<String, String> registerNewUser(@RequestBody User user) {
+    public Map<String, String> registerUser(@RequestBody User user) {
         return Collections.singletonMap("token", userServices.addNewUser(user));
+    }
+
+    @PostMapping(path = "/login")
+    public Map<String, String> loginUser(@RequestBody User user) {
+        return Collections.singletonMap("token", userServices.logInUser(user));
+    }
+
+    @GetMapping(path = "{userId}")
+    public User getUser(@PathVariable("userId") Long userId) {
+        return userServices.getUser(userId);
     }
 
     @DeleteMapping(path = "{userId}")
