@@ -20,21 +20,21 @@ public class UserConfig {
                     "Jon",
                     "James",
                     "jon.james@gmail.com",
-                    "test123",
+                    "testing123",
                     LocalDate.of(1992, JANUARY, 15)
             ));
             userServices.addNewUser(new User(
                     "Mary",
                     "Smith",
                     "mary.smith@gmail.com",
-                    "test123",
+                    "testing123",
                     LocalDate.of(1985, JULY, 21)
             ));
             userServices.addNewUser(new User(
                     "Bill",
                     "Nelson",
                     "bill.nelson@gmail.com",
-                    "test123",
+                    "testing123",
                     LocalDate.of(1999, DECEMBER, 30)
             ));
         };
