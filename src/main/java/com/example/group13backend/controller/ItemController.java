@@ -36,4 +36,14 @@ public class ItemController {
     ) {
         itemServices.updateItemById(itemId, newItem);
     }
+
+//    public void updateItemById(
+//            @PathVariable("itemId") Long itemId,
+//            @RequestParam(required = false) String name,
+//            @RequestParam(required = false) String description,
+//            @RequestParam(required = false) Integer quantity,
+//            @RequestParam(required = false) Double price
+//    ) {
+//        itemServices.updateItemById(itemId, name, description, quantity, price);
+//    }
 }
