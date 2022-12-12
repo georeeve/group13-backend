@@ -1,6 +1,8 @@
 package com.example.group13backend.services;
 
+import com.example.group13backend.db.models.Category;
 import com.example.group13backend.db.models.Item;
+import com.example.group13backend.db.repository.CategoryRepository;
 import com.example.group13backend.db.repository.ItemRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
@@ -11,16 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ItemServices {
     private final ItemRepository itemRepository;
     private final Logger logger;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ItemServices(ItemRepository itemRepository, Logger logger) {
+    public ItemServices(ItemRepository itemRepository, Logger logger,
+                        CategoryRepository categoryRepository) {
         this.itemRepository = itemRepository;
         this.logger = logger;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<Item> geAllItems() {
@@ -34,6 +40,15 @@ public class ItemServices {
             return null;
         }
         return item.get();
+    }
+
+    public List<Item> getItemsByCategory(Long categoryId) {
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        if (categoryOptional.isEmpty()) {
+            logger.error(ErrorMessage.CATEGORY_NOT_FOUND);
+            return null;
+        }
+        return itemRepository.findAllByCategoryId(categoryId);
     }
 
     @Transactional
@@ -85,5 +100,13 @@ public class ItemServices {
             oldItem.setPrice(newItem.getPrice());
         }
 
+    }
+
+    public void deleteItemById(Long itemId) {
+        if (itemRepository.findById(itemId).isEmpty()) {
+            logger.error(ErrorMessage.ITEM_NOT_FOUND);
+            return;
+        }
+        itemRepository.deleteById(itemId);
     }
 }

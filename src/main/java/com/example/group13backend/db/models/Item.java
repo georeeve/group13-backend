@@ -3,7 +3,7 @@ package com.example.group13backend.db.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name = "items")
+@Table(name = "Items")
 public class Item {
     @Id
     @SequenceGenerator(
