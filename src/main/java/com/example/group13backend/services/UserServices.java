@@ -48,10 +48,27 @@ public class UserServices {
 
 
     public String addNewUser(User user) {
+        if (user.getEmail() == null || user.getPassword() == null || user.getFirstName() == null
+            || user.getLastName() == null || user.getDob() == null) {
+            logger.error(ErrorMessage.NULL_VALUE);
+            return null;
+        }
+        if (user.getFirstName().length() == 0 || user.getLastName().length() == 0) {
+            logger.error(ErrorMessage.NAME_INVALID);
+            return null;
+        }
+        if (!user.getEmail().contains("@")) {
+            logger.error(ErrorMessage.EMAIL_INVALID);
+        }
+        if (user.getPassword().length() <= 8) {
+            logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
+            return null;
+        }
         if (userRepository.findUsersByEmail(user.getEmail()).isPresent()) {
             logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
             return null;
         }
+        // TODO: Add dob validation
         user.setPassword(argon2Util.hash(user.getPassword()));
         user.setId(snowflakeUtil.newId());
 
@@ -80,24 +97,47 @@ public class UserServices {
             logger.error(ErrorMessage.USER_NOT_FOUND);
             return;
         }
+        if (firstName != null) {
+            if (firstName.length() == 0) {
+                logger.error(ErrorMessage.NAME_INVALID);
+                return;
+            }
+        }
+        if (lastName != null) {
+            if (lastName.length() == 0) {
+                logger.error(ErrorMessage.NAME_INVALID);
+                return;
+            }
+        }
+
+        if (email != null) {
+            if (!email.contains("@")) {
+                logger.error(ErrorMessage.EMAIL_INVALID);
+                return;
+            }
+        }
+
+        if (password != null) {
+            if (password.length() <= 8) {
+                logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
+                return;
+            }
+        }
 
         User user = userOptional.get();
         if (firstName != null &&
-                firstName.length() > 0 &&
                 !Objects.equals(user.getFirstName(), firstName)
         ) {
             user.setFirstName(firstName);
         }
 
         if (lastName != null &&
-                lastName.length() > 0 &&
                 !Objects.equals(user.getLastName(), lastName)
         ) {
             user.setLastName(lastName);
         }
 
         if (email != null &&
-                email.length() > 0 &&
                 !Objects.equals(user.getEmail(), email)
         ) {
             if (userRepository.findUsersByEmail(email).isPresent()) {
@@ -107,9 +147,7 @@ public class UserServices {
             user.setEmail(email);
         }
 
-        if (password != null &&
-                password.length() > 6 //throw error if too short
-        ) {
+        if (password != null && !argon2Util.verify(password, user.getPassword())) {
             user.setPassword(argon2Util.hash(password));
         }
     }
