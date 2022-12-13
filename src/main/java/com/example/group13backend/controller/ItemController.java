@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @ApiMapping("items")
@@ -30,12 +28,8 @@ public class ItemController {
         return itemServices.getItemById(itemId);
     }
 
-    @GetMapping(path = "/category/{categoryId}")
-    public List<Item> getItemsByCategory(@PathVariable("categoryId") Long categoryId) {
-        return itemServices.getItemsByCategory(categoryId);
-    }
-
-    @PutMapping(path = "{itemId}")
+    // ADMIN ROUTES
+    @PatchMapping(path = "{itemId}")
     public void updateItemById(
             @PathVariable("itemId") Long itemId,
             @RequestBody Item newItem

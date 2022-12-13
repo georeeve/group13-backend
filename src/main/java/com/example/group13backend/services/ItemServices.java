@@ -1,8 +1,6 @@
 package com.example.group13backend.services;
 
-import com.example.group13backend.db.models.Category;
 import com.example.group13backend.db.models.Item;
-import com.example.group13backend.db.repository.CategoryRepository;
 import com.example.group13backend.db.repository.ItemRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
@@ -19,14 +17,14 @@ import java.util.Set;
 public class ItemServices {
     private final ItemRepository itemRepository;
     private final Logger logger;
-    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ItemServices(ItemRepository itemRepository, Logger logger,
-                        CategoryRepository categoryRepository) {
+    public ItemServices(
+            ItemRepository itemRepository,
+            Logger logger
+    ) {
         this.itemRepository = itemRepository;
         this.logger = logger;
-        this.categoryRepository = categoryRepository;
     }
 
     public List<Item> geAllItems() {
@@ -42,15 +40,7 @@ public class ItemServices {
         return item.get();
     }
 
-    public List<Item> getItemsByCategory(Long categoryId) {
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        if (categoryOptional.isEmpty()) {
-            logger.error(ErrorMessage.CATEGORY_NOT_FOUND);
-            return null;
-        }
-        return itemRepository.findAllByCategoryId(categoryId);
-    }
-
+    //ADMIN SERVICES
     @Transactional
     public void updateItemById(
             Long itemId,
