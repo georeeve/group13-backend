@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table (name = "categories")
+@Table(name = "Categories")
 public class Category {
     @Id
     @SequenceGenerator(
@@ -36,13 +36,21 @@ public class Category {
         Category = category;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCategory() { return Category; }
+    public String getCategory() {
+        return Category;
+    }
 
-    public void setCategory(String category) { Category = category; }
+    public void setCategory(String category) {
+        Category = category;
+    }
 
     @Override
     public String toString() {

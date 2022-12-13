@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @ApiMapping("items")
@@ -29,6 +30,11 @@ public class ItemController {
         return itemServices.getItemById(itemId);
     }
 
+    @GetMapping(path = "/category/{categoryId}")
+    public List<Item> getItemsByCategory(@PathVariable("categoryId") Long categoryId) {
+        return itemServices.getItemsByCategory(categoryId);
+    }
+
     @PutMapping(path = "{itemId}")
     public void updateItemById(
             @PathVariable("itemId") Long itemId,
@@ -36,4 +42,14 @@ public class ItemController {
     ) {
         itemServices.updateItemById(itemId, newItem);
     }
+
+    @DeleteMapping(path = "{itemId}")
+    public void deleteItemById(@PathVariable("itemId") Long itemId) {
+        itemServices.deleteItemById(itemId);
+    }
+
+    //TODO: deleteByBatch
+//    @DeleteMapping(path = "delete")
+
+    //TODO: deleteAllItems
 }

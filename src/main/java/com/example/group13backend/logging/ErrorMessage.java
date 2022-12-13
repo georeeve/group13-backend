@@ -12,6 +12,7 @@ public enum ErrorMessage {
     DESCRIPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "Description longer than 200 characters"),
     QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "Cannot make quantity less than 0"),
     PRICE_INVALID(HttpStatus.BAD_REQUEST, "Cannot make price less than 0"),
+    CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "Category not found"),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "Not a valid token"),
     USERNAME_OR_PASSWORD_INCORRECT(HttpStatus.UNAUTHORIZED, "Username or password is incorrect"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User is not found"),
