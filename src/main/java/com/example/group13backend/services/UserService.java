@@ -74,7 +74,7 @@ public class UserService {
             logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
             return null;
         }
-        // TODO: Add dob validation
+        //TODO: Add dob validation
         user.setPassword(argon2Util.hash(user.getPassword()));
         user.setId(snowflakeUtil.newId());
 
