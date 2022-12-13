@@ -46,6 +46,15 @@ public class User {
         this.dob = dob;
     }
 
+    public User(Long id, boolean admin, String firstName, String lastName, String email, LocalDate dob) {
+        this.id = id;
+        this.admin = admin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dob = dob;
+    }
+
     public Long getId() {
         return id;
     }

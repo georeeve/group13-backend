@@ -7,9 +7,7 @@ import com.example.group13backend.services.UserService;
 import com.example.group13backend.views.PublicView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +27,14 @@ public class AdminUsersController {
     @JsonView(PublicView.class)
     public List<User> getAllUsers(@RequestHeader("Authorization") String authorization) {
         return adminUserService.getAllItems(authorization);
+    }
+
+    @PatchMapping
+    public void patchUser(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody User newUser
+    ) {
+        adminUserService.patchUser(authorization, newUser);
     }
 
 }
