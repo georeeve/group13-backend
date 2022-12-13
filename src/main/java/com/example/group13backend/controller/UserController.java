@@ -3,6 +3,8 @@ package com.example.group13backend.controller;
 import com.example.group13backend.annotations.ApiMapping;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.services.UserService;
+import com.example.group13backend.views.PublicView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,12 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    @JsonView(PublicView.class)
+    public User getCurrentUser(@RequestHeader("Authorization") String authorization) {
+        return userService.getCurrentUser(authorization);
     }
 
     @PostMapping

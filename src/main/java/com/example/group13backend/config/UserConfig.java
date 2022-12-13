@@ -16,13 +16,15 @@ public class UserConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserService userService) {
         return args -> {
-            userService.createUser(new User(
+            User jon = new User(
                     "Jon",
                     "James",
                     "jon.james@gmail.com",
                     "testing123",
                     LocalDate.of(1992, JANUARY, 15)
-            ));
+            );
+            jon.setAdmin(true);
+            userService.createUser(jon);
             userService.createUser(new User(
                     "Mary",
                     "Smith",
@@ -38,5 +40,6 @@ public class UserConfig {
                     LocalDate.of(1999, DECEMBER, 30)
             ));
         };
+
     }
 }
