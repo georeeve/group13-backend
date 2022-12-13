@@ -38,6 +38,7 @@ public class User {
     }
 
     public User(String firstName, String lastName, String email, String password, LocalDate dob) {
+        this.admin = false;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
