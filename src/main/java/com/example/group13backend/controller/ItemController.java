@@ -20,7 +20,7 @@ public class ItemController {
 
     @GetMapping
     public List<Item> getAllItems() {
-        return itemServices.geAllItems();
+        return itemServices.getAllItems();
     }
 
     @GetMapping(path = "{itemId}")

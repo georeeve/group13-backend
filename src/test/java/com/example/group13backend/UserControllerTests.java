@@ -27,12 +27,14 @@ class UserControllerTests {
     private final UserController userController;
     private final UserRepository userRepository;
     private final TestRestTemplate restTemplate;
+    private final TestUtils testUtils;
 
     @Autowired
-    public UserControllerTests(UserController userController, UserRepository userRepository, TestRestTemplate restTemplate) {
+    public UserControllerTests(UserController userController, UserRepository userRepository, TestRestTemplate restTemplate, TestUtils testUtils) {
         this.userController = userController;
         this.userRepository = userRepository;
         this.restTemplate = restTemplate;
+        this.testUtils = testUtils;
     }
 
     @BeforeEach
@@ -84,19 +86,18 @@ class UserControllerTests {
     }
 
     public ResponseEntity<String> getUserWithToken(String token) {
-        final var entity = getAuthorizationEntity(token);
-        return this.restTemplate.exchange(getEndpoint("/api/v1/user"), HttpMethod.GET, entity, String.class);
+        final var entity = testUtils.getAuthorizationEntity(token);
+        return this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
     }
 
     public ResponseEntity<String> deleteUserWithToken(String token) {
-        final var entity = getAuthorizationEntity(token);
-        return this.restTemplate.exchange(getEndpoint("/api/v1/user"), HttpMethod.DELETE, entity, String.class);
+        final var entity = testUtils.getAuthorizationEntity(token);
+        return this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
     }
-
 
     public String postNewUser(User user) {
         final var entity = new HttpEntity<>(user);
-        final var response = this.restTemplate.exchange(getEndpoint("/api/v1/user"), HttpMethod.POST, entity, String.class);
+        final var response = this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
         return response.getBody();
     }
 
@@ -108,16 +109,5 @@ class UserControllerTests {
         } catch (JsonProcessingException exception) {
             return null;
         }
-    }
-
-    public HttpEntity<String> getAuthorizationEntity(String token) {
-        final var httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "Bearer " + token);
-
-        return new HttpEntity<>(httpHeaders);
-    }
-
-    public String getEndpoint(String path) {
-        return "http://localhost:" + port + path;
     }
 }
