@@ -5,6 +5,8 @@ import com.example.group13backend.db.repository.UserRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,4 +99,20 @@ public class AdminUserService {
         }
         logger.error(ErrorMessage.NOT_ADMIN);
     }
+
+    public ResponseEntity<String> deleteUser(String authorization, Long toDeleteId) {
+        final var adminUser = userService.getCurrentUser(authorization);
+
+        if (adminUser.isAdmin()) {
+            if (userRepository.findById(toDeleteId).isEmpty()) {
+                return new ResponseEntity<>("No user to delete", HttpStatus.NO_CONTENT);
+            }
+            userRepository.deleteById(toDeleteId);
+            return new ResponseEntity<>("User deleted", HttpStatus.ACCEPTED);
+        }
+        logger.error(ErrorMessage.NOT_ADMIN);
+        return null;
+    }
+
+
 }
