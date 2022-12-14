@@ -33,13 +33,13 @@ public class UserController {
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestHeader("Authorization") String authorization) {
+    public void deleteCurrentUser(@RequestHeader("Authorization") String authorization) {
         final var user = userService.getCurrentUser(authorization);
         userService.deleteUserById(user.getId());
     }
 
     @PatchMapping
-    public void patchUser(
+    public void patchCurrentUser(
             @RequestHeader("Authorization") String authorization,
             @RequestBody User newUser) {
         final var user = userService.getCurrentUser(authorization);
