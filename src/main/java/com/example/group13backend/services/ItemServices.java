@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ItemServices {
@@ -27,7 +26,7 @@ public class ItemServices {
         this.logger = logger;
     }
 
-    public List<Item> geAllItems() {
+    public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
 
