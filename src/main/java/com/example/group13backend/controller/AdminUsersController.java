@@ -7,6 +7,7 @@ import com.example.group13backend.services.UserService;
 import com.example.group13backend.views.PublicView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,14 @@ public class AdminUsersController {
             @RequestBody User newUser
     ) {
         adminUserService.patchUser(authorization, newUser);
+    }
+
+    @DeleteMapping(path = "{toDeleteId}")
+    public ResponseEntity<String> deleteUser(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("toDeleteId") Long toDeleteId
+    ) {
+        return adminUserService.deleteUser(authorization, toDeleteId);
     }
 
 }

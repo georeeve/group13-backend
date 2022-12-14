@@ -17,7 +17,8 @@ public enum ErrorMessage {
     USERNAME_OR_PASSWORD_INCORRECT(HttpStatus.UNAUTHORIZED, "Username or password is incorrect"),
     NOT_ADMIN(HttpStatus.FORBIDDEN, "Must be an administrator to access this resource"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User is not found"),
-    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item is not found");
+    ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item is not found"),
+    USER_INDER_AGE(HttpStatus.BAD_REQUEST, "User must be over 18");
 
     private final HttpStatus statusCode;
     private final String message;
