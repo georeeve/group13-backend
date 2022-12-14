@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -72,6 +74,13 @@ public class AdminUserService {
                 }
             }
 
+
+            if (newUser.getDob() != null) {
+                LocalDate over18 = LocalDate.now().minusYears(18);
+                if (newUser.getDob().isAfter(over18))
+                    logger.error(ErrorMessage.USER_INDER_AGE);
+            }
+
             User oldUser = userOptional.get();
 
             if (newUser.getFirstName() != null &&
@@ -94,6 +103,12 @@ public class AdminUserService {
                     return;
                 }
                 oldUser.setEmail(newUser.getEmail());
+            }
+
+            if (newUser.getDob() != null &&
+                    !Objects.equals(oldUser.getDob(), newUser.getDob())
+            ) {
+                oldUser.setDob(newUser.getDob());
             }
             return;
         }
