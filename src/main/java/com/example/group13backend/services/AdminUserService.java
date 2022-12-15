@@ -53,25 +53,25 @@ public class AdminUserService {
                 return;
             }
 
-            if (newUser.getFirstName() != null) {
-                if (newUser.getFirstName().length() == 0) {
-                    logger.error(ErrorMessage.NAME_INVALID);
-                    return;
-                }
-            }
-            if (newUser.getLastName() != null) {
-                if (newUser.getLastName().length() == 0) {
-                    logger.error(ErrorMessage.NAME_INVALID);
-                    return;
-                }
-            }
+//            if (newUser.getFirstName() != null) {
+//                if (newUser.getFirstName().length() == 0) {
+//                    logger.error(ErrorMessage.NAME_INVALID);
+//                    return;
+//                }
+//            }
+//            if (newUser.getLastName() != null) {
+//                if (newUser.getLastName().length() == 0) {
+//                    logger.error(ErrorMessage.NAME_INVALID);
+//                    return;
+//                }
+//            }
 
-            if (newUser.getEmail() != null) {
-                if (!newUser.getEmail().contains("@")) {
-                    logger.error(ErrorMessage.EMAIL_INVALID);
-                    return;
-                }
-            }
+//            if (newUser.getEmail() != null) {
+//                if (!newUser.getEmail().contains("@")) {
+//                    logger.error(ErrorMessage.EMAIL_INVALID);
+//                    return;
+//                }
+//            }
 
 
             if (newUser.getDob() != null) {
