@@ -53,7 +53,7 @@ class UserControllerTests {
         final var objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        final var token = createExampleUser();
+        final var token = testUtil.createExampleUser(false);
         final var response = getUserWithToken(token);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -79,7 +79,7 @@ class UserControllerTests {
 
     @Test
     public void deleteUser() {
-        final var token = createExampleUser();
+        final var token = testUtil.createExampleUser(false);
         assertThat(getUserWithToken(token).getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(deleteUserWithToken(token).getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getUserWithToken(token).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -88,27 +88,17 @@ class UserControllerTests {
 
     public ResponseEntity<String> getUserWithToken(String token) {
         final var entity = testUtil.getAuthorizationEntity(token);
-        return this.restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
+        return restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
     }
 
     public ResponseEntity<String> deleteUserWithToken(String token) {
         final var entity = testUtil.getAuthorizationEntity(token);
-        return this.restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
+        return restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
     }
 
     public String postNewUser(User user) {
         final var entity = new HttpEntity<>(user);
-        final var response = this.restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
+        final var response = restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
         return response.getBody();
-    }
-
-    public String createExampleUser() {
-        final var objectMapper = new ObjectMapper();
-        final var response = postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)));
-        try {
-            return objectMapper.readTree(response).get("token").textValue();
-        } catch (JsonProcessingException exception) {
-            return null;
-        }
     }
 }

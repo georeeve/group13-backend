@@ -40,7 +40,7 @@ public class ItemControllerTests {
     @Test
     public void getItems() throws JsonProcessingException {
         final var objectMapper = new ObjectMapper();
-        final var response = this.restTemplate.exchange(testUtil.getEndpoint("/items", port), HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        final var response = restTemplate.exchange(testUtil.getEndpoint("/items", port), HttpMethod.GET, HttpEntity.EMPTY, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         final var items = objectMapper.readValue(response.getBody(), Item[].class);
@@ -51,7 +51,7 @@ public class ItemControllerTests {
     @Test
     public void getItem() throws JsonProcessingException {
         final var objectMapper = new ObjectMapper();
-        final var response = this.restTemplate.exchange(testUtil.getEndpoint("/items/1", port), HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        final var response = restTemplate.exchange(testUtil.getEndpoint("/items/1", port), HttpMethod.GET, HttpEntity.EMPTY, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         final var item = objectMapper.readValue(response.getBody(), Item.class);
