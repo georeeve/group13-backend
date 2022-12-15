@@ -1,11 +1,11 @@
-package com.example.group13backend;
+package com.example.group13backend.testutils;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestUtils {
+public class TestUtil {
     public String getEndpoint(String path, int port) {
         return "http://localhost:" + port + "/api/v1" + path;
     }

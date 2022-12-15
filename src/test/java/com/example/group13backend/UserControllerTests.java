@@ -3,6 +3,7 @@ package com.example.group13backend;
 import com.example.group13backend.controller.UserController;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
+import com.example.group13backend.testutils.TestUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -27,14 +28,14 @@ class UserControllerTests {
     private final UserController userController;
     private final UserRepository userRepository;
     private final TestRestTemplate restTemplate;
-    private final TestUtils testUtils;
+    private final TestUtil testUtil;
 
     @Autowired
-    public UserControllerTests(UserController userController, UserRepository userRepository, TestRestTemplate restTemplate, TestUtils testUtils) {
+    public UserControllerTests(UserController userController, UserRepository userRepository, TestRestTemplate restTemplate, TestUtil testUtil) {
         this.userController = userController;
         this.userRepository = userRepository;
         this.restTemplate = restTemplate;
-        this.testUtils = testUtils;
+        this.testUtil = testUtil;
     }
 
     @BeforeEach
@@ -86,18 +87,18 @@ class UserControllerTests {
     }
 
     public ResponseEntity<String> getUserWithToken(String token) {
-        final var entity = testUtils.getAuthorizationEntity(token);
-        return this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
+        final var entity = testUtil.getAuthorizationEntity(token);
+        return this.restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
     }
 
     public ResponseEntity<String> deleteUserWithToken(String token) {
-        final var entity = testUtils.getAuthorizationEntity(token);
-        return this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
+        final var entity = testUtil.getAuthorizationEntity(token);
+        return this.restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
     }
 
     public String postNewUser(User user) {
         final var entity = new HttpEntity<>(user);
-        final var response = this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
+        final var response = this.restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
         return response.getBody();
     }
 

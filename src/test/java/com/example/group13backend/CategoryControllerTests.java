@@ -2,6 +2,7 @@ package com.example.group13backend;
 
 import com.example.group13backend.controller.CategoryController;
 import com.example.group13backend.db.models.Item;
+import com.example.group13backend.testutils.TestUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,13 @@ public class CategoryControllerTests {
 
     private final CategoryController categoryController;
     private final TestRestTemplate restTemplate;
-    private final TestUtils testUtils;
+    private final TestUtil testUtil;
 
     @Autowired
-    public CategoryControllerTests(CategoryController categoryController, TestRestTemplate restTemplate, TestUtils testUtils) {
+    public CategoryControllerTests(CategoryController categoryController, TestRestTemplate restTemplate, TestUtil testUtil) {
         this.categoryController = categoryController;
         this.restTemplate = restTemplate;
-        this.testUtils = testUtils;
+        this.testUtil = testUtil;
     }
 
     @Test
@@ -39,7 +40,7 @@ public class CategoryControllerTests {
     @Test
     public void getCategory() throws JsonProcessingException {
         final var objectMapper = new ObjectMapper();
-        final var response = this.restTemplate.exchange(testUtils.getEndpoint("/categories/1", port), HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        final var response = this.restTemplate.exchange(testUtil.getEndpoint("/categories/1", port), HttpMethod.GET, HttpEntity.EMPTY, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         final var items = objectMapper.readValue(response.getBody(), Item[].class);
