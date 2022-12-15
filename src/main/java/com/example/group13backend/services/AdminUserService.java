@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -78,7 +77,7 @@ public class AdminUserService {
             if (newUser.getDob() != null) {
                 LocalDate over18 = LocalDate.now().minusYears(18);
                 if (newUser.getDob().isAfter(over18))
-                    logger.error(ErrorMessage.USER_INDER_AGE);
+                    logger.error(ErrorMessage.USER_UNDER_AGE);
             }
 
             User oldUser = userOptional.get();

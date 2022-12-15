@@ -67,13 +67,13 @@ class UserControllerTests {
 
     @Test
     public void newUsers() {
-        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("token");
-        assertThat(postNewUser(new User("Test", "Test", "test2@example.com", null, LocalDate.of(2022, JANUARY, 1)))).contains("Null value provided for required field");
-        assertThat(postNewUser(new User("", "Test", "test3@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("Not a valid first name or last name");
-        assertThat(postNewUser(new User("Test", "", "test4@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("Not a valid first name or last name");
-        assertThat(postNewUser(new User("Test", "Test", "example", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("Not a valid email address");
-        assertThat(postNewUser(new User("Test", "Test", "test5@example.com", "test123", LocalDate.of(2022, JANUARY, 1)))).contains("Password must be greater than 8 characters long");
-        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("User is already registered");
+        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("token");
+        assertThat(postNewUser(new User("Test", "Test", "test2@example.com", null, LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("Null value provided for required field");
+        assertThat(postNewUser(new User("", "Test", "test3@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("Not a valid first name or last name");
+        assertThat(postNewUser(new User("Test", "", "test4@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("Not a valid first name or last name");
+        assertThat(postNewUser(new User("Test", "Test", "example", "testing123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("Not a valid email address");
+        assertThat(postNewUser(new User("Test", "Test", "test5@example.com", "test123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("Password must be greater than 8 characters long");
+        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode))).contains("User is already registered");
     }
 
     @Test
@@ -103,7 +103,7 @@ class UserControllerTests {
 
     public String createExampleUser() {
         final var objectMapper = new ObjectMapper();
-        final var response = postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)));
+        final var response = postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), addressLine1, addressLine2, city, postCode));
         try {
             return objectMapper.readTree(response).get("token").textValue();
         } catch (JsonProcessingException exception) {

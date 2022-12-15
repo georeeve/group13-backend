@@ -21,8 +21,11 @@ public class UserConfig {
                     "James",
                     "jon.james@gmail.com",
                     "testing123",
-                    LocalDate.of(1992, JANUARY, 15)
-            );
+                    LocalDate.of(1992, JANUARY, 15),
+                    "23 Jon Street",
+                    "",
+                    "Leeds",
+                    "LS1 1SS");
             jon.setAdmin(true);
             userService.createUser(jon);
             userService.createUser(new User(
@@ -30,15 +33,21 @@ public class UserConfig {
                     "Smith",
                     "mary.smith@gmail.com",
                     "testing123",
-                    LocalDate.of(1985, JULY, 21)
-            ));
+                    LocalDate.of(1985, JULY, 21),
+                    "153 Green Drive",
+                    "",
+                    "Leeds",
+                    "LS3 4WD"));
             userService.createUser(new User(
                     "Bill",
                     "Nelson",
                     "bill.nelson@gmail.com",
                     "testing123",
-                    LocalDate.of(1999, DECEMBER, 30)
-            ));
+                    LocalDate.of(1999, DECEMBER, 30),
+                    "2 Main Street",
+                    "",
+                    "Leeds",
+                    "LS12 1XX"));
         };
 
     }
