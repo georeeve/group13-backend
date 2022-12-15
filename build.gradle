@@ -31,10 +31,10 @@ tasks.named('test') {
 }
 
 bootRun {
-    jvmArgs = ["-Dspring.output.ansi.enabled=ALWAYS"]
+    environment 'spring.output.ansi.console-available', true
     dependsOn test
 }
 
 test {
-    jvmArgs = ["-Dspring.output.ansi.enabled=ALWAYS"]
+    environment 'spring.output.ansi.console-available', true
 }
