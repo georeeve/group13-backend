@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Documented
 public @interface Password {
 
-    String message() default "{Password.invalid}";
+    String message() default "Password is invalid";
 
     Class<?>[] groups() default {};
 

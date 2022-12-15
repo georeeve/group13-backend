@@ -59,17 +59,17 @@ public class UserService {
             logger.error(ErrorMessage.NULL_VALUE);
             return null;
         }
-        if (user.getFirstName().length() == 0 || user.getLastName().length() == 0) {
-            logger.error(ErrorMessage.NAME_INVALID);
-            return null;
-        }
-        if (!user.getEmail().contains("@")) {
-            logger.error(ErrorMessage.EMAIL_INVALID);
-        }
-        if (user.getPassword().length() <= 8) {
-            logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
-            return null;
-        }
+//        if (user.getFirstName().length() == 0 || user.getLastName().length() == 0) {
+//            logger.error(ErrorMessage.NAME_INVALID);
+//            return null;
+//        }
+//        if (!user.getEmail().contains("@")) {
+//            logger.error(ErrorMessage.EMAIL_INVALID);
+//        }
+//        if (user.getPassword().length() <= 8) {
+//            logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
+//            return null;
+//        }
         if (userRepository.findUsersByEmail(user.getEmail()).isPresent()) {
             logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
             return null;
