@@ -21,5 +21,6 @@ class Argon2UtilTest {
     public void verify() {
         final var hash = argon2Util.hash("password");
         assertThat(argon2Util.verify("password", hash)).isTrue();
+        assertThat(argon2Util.verify("password1", hash)).isFalse();
     }
 }
