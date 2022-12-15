@@ -14,7 +14,7 @@ class Argon2UtilTest {
 
     @Test
     public void hash() {
-        assertThat(argon2Util.hash("password").matches("\\$argon2id\\$v=.+")).isTrue();
+        assertThat(argon2Util.hash("password")).startsWith("$argon2id$v=");
     }
 
     @Test
