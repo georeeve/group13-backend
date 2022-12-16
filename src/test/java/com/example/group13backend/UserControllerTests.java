@@ -3,6 +3,7 @@ package com.example.group13backend;
 import com.example.group13backend.controller.UserController;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
+import com.example.group13backend.testutils.TestUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -27,14 +28,14 @@ class UserControllerTests {
     private final UserController userController;
     private final UserRepository userRepository;
     private final TestRestTemplate restTemplate;
-    private final TestUtils testUtils;
+    private final TestUtil testUtil;
 
     @Autowired
-    public UserControllerTests(UserController userController, UserRepository userRepository, TestRestTemplate restTemplate, TestUtils testUtils) {
+    public UserControllerTests(UserController userController, UserRepository userRepository, TestRestTemplate restTemplate, TestUtil testUtil) {
         this.userController = userController;
         this.userRepository = userRepository;
         this.restTemplate = restTemplate;
-        this.testUtils = testUtils;
+        this.testUtil = testUtil;
     }
 
     @BeforeEach
@@ -52,7 +53,7 @@ class UserControllerTests {
         final var objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        final var token = createExampleUser();
+        final var token = testUtil.createExampleUser(false);
         final var response = getUserWithToken(token);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -78,7 +79,7 @@ class UserControllerTests {
 
     @Test
     public void deleteUser() {
-        final var token = createExampleUser();
+        final var token = testUtil.createExampleUser(false);
         assertThat(getUserWithToken(token).getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(deleteUserWithToken(token).getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getUserWithToken(token).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -86,28 +87,18 @@ class UserControllerTests {
     }
 
     public ResponseEntity<String> getUserWithToken(String token) {
-        final var entity = testUtils.getAuthorizationEntity(token);
-        return this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
+        final var entity = testUtil.getAuthorizationEntity(token);
+        return restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.GET, entity, String.class);
     }
 
     public ResponseEntity<String> deleteUserWithToken(String token) {
-        final var entity = testUtils.getAuthorizationEntity(token);
-        return this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
+        final var entity = testUtil.getAuthorizationEntity(token);
+        return restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.DELETE, entity, String.class);
     }
 
     public String postNewUser(User user) {
         final var entity = new HttpEntity<>(user);
-        final var response = this.restTemplate.exchange(testUtils.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
+        final var response = restTemplate.exchange(testUtil.getEndpoint("/user", port), HttpMethod.POST, entity, String.class);
         return response.getBody();
-    }
-
-    public String createExampleUser() {
-        final var objectMapper = new ObjectMapper();
-        final var response = postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"));
-        try {
-            return objectMapper.readTree(response).get("token").textValue();
-        } catch (JsonProcessingException exception) {
-            return null;
-        }
     }
 }
