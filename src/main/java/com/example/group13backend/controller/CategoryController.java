@@ -1,6 +1,7 @@
 package com.example.group13backend.controller;
 
 import com.example.group13backend.annotations.ApiMapping;
+import com.example.group13backend.db.models.Category;
 import com.example.group13backend.db.models.Item;
 import com.example.group13backend.services.CategoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class CategoryController {
     @Autowired
     public CategoryController(CategoryServices categoryServices) {
         this.categoryServices = categoryServices;
+    }
+
+    @GetMapping
+    public List<Category> getCategories() {
+        return categoryServices.getCategories();
     }
 
     @GetMapping(path = "/{categoryId}")

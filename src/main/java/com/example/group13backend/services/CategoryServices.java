@@ -36,4 +36,8 @@ public class CategoryServices {
         }
         return itemRepository.findAllByCategoryId(categoryId);
     }
+
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
 }
