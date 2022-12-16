@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class Logger {
 
-    public void error(ErrorMessage errorMessage) {
-        throw new ResponseStatusException(errorMessage.status(), errorMessage.toString());
-    }
+  public void error(ErrorMessage errorMessage) {
+    throw new ResponseStatusException(errorMessage.status(), errorMessage.toString());
+  }
 }

@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class Argon2Util {
 
-    private final Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+  private final Argon2PasswordEncoder encoder =
+      Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
 
-    public String hash(String password) {
-        return encoder.encode(password);
-    }
+  public String hash(String password) {
+    return encoder.encode(password);
+  }
 
-    public boolean verify(String password, String hash) {
-        return encoder.matches(password, hash);
-    }
+  public boolean verify(String password, String hash) {
+    return encoder.matches(password, hash);
+  }
 }
