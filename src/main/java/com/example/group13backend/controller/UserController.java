@@ -5,15 +5,21 @@ import com.example.group13backend.db.models.User;
 import com.example.group13backend.services.UserService;
 import com.example.group13backend.views.PublicView;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @ApiMapping("user")
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
@@ -28,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public Map<String, String> newUser(@RequestBody User user) {
+    public Map<String, String> newUser(@Valid @RequestBody User user) {
         return Collections.singletonMap("token", userService.createUser(user));
     }
 
@@ -44,5 +50,18 @@ public class UserController {
             @RequestBody User newUser) {
         final var user = userService.getCurrentUser(authorization);
         userService.patchUserById(user.getId(), newUser);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

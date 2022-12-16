@@ -68,13 +68,13 @@ class UserControllerTests {
 
     @Test
     public void newUsers() {
-        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("token");
-        assertThat(postNewUser(new User("Test", "Test", "test2@example.com", null, LocalDate.of(2022, JANUARY, 1)))).contains("Null value provided for required field");
-        assertThat(postNewUser(new User("", "Test", "test3@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("Not a valid first name or last name");
-        assertThat(postNewUser(new User("Test", "", "test4@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("Not a valid first name or last name");
-        assertThat(postNewUser(new User("Test", "Test", "example", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("Not a valid email address");
-        assertThat(postNewUser(new User("Test", "Test", "test5@example.com", "test123", LocalDate.of(2022, JANUARY, 1)))).contains("Password must be greater than 8 characters long");
-        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1)))).contains("User is already registered");
+        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("token");
+        assertThat(postNewUser(new User("Test", "Test", "test2@example.com", null, LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("Null value provided for required field");
+        assertThat(postNewUser(new User("", "Test", "test3@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("Not a valid first name or last name");
+        assertThat(postNewUser(new User("Test", "", "test4@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("Not a valid first name or last name");
+        assertThat(postNewUser(new User("Test", "Test", "example", "testing123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("Not a valid email address");
+        assertThat(postNewUser(new User("Test", "Test", "test5@example.com", "test123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("Password must be greater than 8 characters long");
+        assertThat(postNewUser(new User("Test", "Test", "test@example.com", "testing123", LocalDate.of(2022, JANUARY, 1), "23 Jon Street", "", "Leeds", "LS1 1SS"))).contains("User is already registered");
     }
 
     @Test

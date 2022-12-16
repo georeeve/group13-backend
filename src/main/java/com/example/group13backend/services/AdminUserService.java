@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -54,31 +53,31 @@ public class AdminUserService {
                 return;
             }
 
-            if (newUser.getFirstName() != null) {
-                if (newUser.getFirstName().length() == 0) {
-                    logger.error(ErrorMessage.NAME_INVALID);
-                    return;
-                }
-            }
-            if (newUser.getLastName() != null) {
-                if (newUser.getLastName().length() == 0) {
-                    logger.error(ErrorMessage.NAME_INVALID);
-                    return;
-                }
-            }
+//            if (newUser.getFirstName() != null) {
+//                if (newUser.getFirstName().length() == 0) {
+//                    logger.error(ErrorMessage.NAME_INVALID);
+//                    return;
+//                }
+//            }
+//            if (newUser.getLastName() != null) {
+//                if (newUser.getLastName().length() == 0) {
+//                    logger.error(ErrorMessage.NAME_INVALID);
+//                    return;
+//                }
+//            }
 
-            if (newUser.getEmail() != null) {
-                if (!newUser.getEmail().contains("@")) {
-                    logger.error(ErrorMessage.EMAIL_INVALID);
-                    return;
-                }
-            }
+//            if (newUser.getEmail() != null) {
+//                if (!newUser.getEmail().contains("@")) {
+//                    logger.error(ErrorMessage.EMAIL_INVALID);
+//                    return;
+//                }
+//            }
 
 
             if (newUser.getDob() != null) {
                 LocalDate over18 = LocalDate.now().minusYears(18);
                 if (newUser.getDob().isAfter(over18))
-                    logger.error(ErrorMessage.USER_INDER_AGE);
+                    logger.error(ErrorMessage.USER_UNDER_AGE);
             }
 
             User oldUser = userOptional.get();

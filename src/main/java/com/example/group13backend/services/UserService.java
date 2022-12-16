@@ -59,22 +59,22 @@ public class UserService {
             logger.error(ErrorMessage.NULL_VALUE);
             return null;
         }
-        if (user.getFirstName().length() == 0 || user.getLastName().length() == 0) {
-            logger.error(ErrorMessage.NAME_INVALID);
-            return null;
-        }
-        if (!user.getEmail().contains("@")) {
-            logger.error(ErrorMessage.EMAIL_INVALID);
-        }
-        if (user.getPassword().length() <= 8) {
-            logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
-            return null;
-        }
+//        if (user.getFirstName().length() == 0 || user.getLastName().length() == 0) {
+//            logger.error(ErrorMessage.NAME_INVALID);
+//            return null;
+//        }
+//        if (!user.getEmail().contains("@")) {
+//            logger.error(ErrorMessage.EMAIL_INVALID);
+//        }
+//        if (user.getPassword().length() <= 8) {
+//            logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
+//            return null;
+//        }
         if (userRepository.findUsersByEmail(user.getEmail()).isPresent()) {
             logger.error(ErrorMessage.EMAIL_ALREADY_REGISTERED);
             return null;
         }
-        //TODO: Add dob validation
+        // TODO: Add dob validation
         user.setPassword(argon2Util.hash(user.getPassword()));
         user.setId(snowflakeUtil.newId());
 
@@ -101,32 +101,32 @@ public class UserService {
             return;
         }
 
-        if (newUser.getFirstName() != null) {
-            if (newUser.getFirstName().length() == 0) {
-                logger.error(ErrorMessage.NAME_INVALID);
-                return;
-            }
-        }
-        if (newUser.getLastName() != null) {
-            if (newUser.getLastName().length() == 0) {
-                logger.error(ErrorMessage.NAME_INVALID);
-                return;
-            }
-        }
+//        if (newUser.getFirstName() != null) {
+//            if (newUser.getFirstName().length() == 0) {
+//                logger.error(ErrorMessage.NAME_INVALID);
+//                return;
+//            }
+//        }
+//        if (newUser.getLastName() != null) {
+//            if (newUser.getLastName().length() == 0) {
+//                logger.error(ErrorMessage.NAME_INVALID);
+//                return;
+//            }
+//        }
 
-        if (newUser.getEmail() != null) {
-            if (!newUser.getEmail().contains("@")) {
-                logger.error(ErrorMessage.EMAIL_INVALID);
-                return;
-            }
-        }
+//        if (newUser.getEmail() != null) {
+//            if (!newUser.getEmail().contains("@")) {
+//                logger.error(ErrorMessage.EMAIL_INVALID);
+//                return;
+//            }
+//        }
 
-        if (newUser.getPassword() != null) {
-            if (newUser.getPassword().length() <= 8) {
-                logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
-                return;
-            }
-        }
+//        if (newUser.getPassword() != null) {
+//            if (newUser.getPassword().length() <= 8) {
+//                logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
+//                return;
+//            }
+//        }
 
         User oldUser = userOptional.get();
 
