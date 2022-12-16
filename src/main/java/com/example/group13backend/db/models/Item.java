@@ -5,102 +5,103 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Items")
 public class Item {
-    @Id
-    @SequenceGenerator(
-            name = "item_sequence",
-            sequenceName = "item_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "item_sequence"
-    )
-    private Long id;
-    private String name;
-    private String description;
-    private Integer quantity;
-    private Double price;
+  @Id
+  @SequenceGenerator(name = "item_sequence", sequenceName = "item_sequence", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_sequence")
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "category_id")
-    private Category category;
+  private String name;
+  private String description;
+  private Integer quantity;
+  private Double price;
 
-    public Item() {
-    }
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "category_id")
+  private Category category;
 
-    public Item(Long id, String name, String description, Integer quantity, Double price) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.quantity = quantity;
-        this.price = price;
-    }
+  public Item() {}
 
-    public Item(String name, String description, Integer quantity, Double price, Category category) {
-        this.name = name;
-        this.description = description;
-        this.quantity = quantity;
-        this.price = price;
-        this.category = category;
-    }
+  public Item(Long id, String name, String description, Integer quantity, Double price) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.quantity = quantity;
+    this.price = price;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Item(String name, String description, Integer quantity, Double price, Category category) {
+    this.name = name;
+    this.description = description;
+    this.quantity = quantity;
+    this.price = price;
+    this.category = category;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+  public Integer getQuantity() {
+    return quantity;
+  }
 
-    public Double getPrice() {
-        return price;
-    }
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
+  }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+  public Double getPrice() {
+    return price;
+  }
 
-    public Category getCategory() {
-        return category;
-    }
+  public void setPrice(Double price) {
+    this.price = price;
+  }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+  public Category getCategory() {
+    return category;
+  }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", category=" + category +
-                '}';
-    }
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  @Override
+  public String toString() {
+    return "Item{"
+        + "id="
+        + id
+        + ", name='"
+        + name
+        + '\''
+        + ", description='"
+        + description
+        + '\''
+        + ", quantity="
+        + quantity
+        + ", price="
+        + price
+        + ", category="
+        + category
+        + '}';
+  }
 }
