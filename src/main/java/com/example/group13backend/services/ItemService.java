@@ -4,20 +4,21 @@ import com.example.group13backend.db.models.Item;
 import com.example.group13backend.db.repository.ItemRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
-public class ItemServices {
+public class ItemService {
   private final ItemRepository itemRepository;
   private final Logger logger;
 
   @Autowired
-  public ItemServices(ItemRepository itemRepository, Logger logger) {
+  public ItemService(ItemRepository itemRepository, Logger logger) {
     this.itemRepository = itemRepository;
     this.logger = logger;
   }
