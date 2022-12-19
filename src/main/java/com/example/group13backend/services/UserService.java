@@ -40,12 +40,7 @@ public class UserService {
   }
 
   public User getCurrentUser(String authorization) {
-    final var tokenSplit = authorization.split("Bearer ");
-    if (tokenSplit.length != 2) {
-      logger.error(ErrorMessage.TOKEN_INVALID);
-      return null;
-    }
-    final var token = tokenSplit[1];
+    final var token = jwtUtil.getTokenFromHeader(authorization);
     final var sessionId = jwtUtil.getSessionId(token);
     if (disallowedSessionService.checkDisallowedSession(sessionId)) {
       logger.error(ErrorMessage.TOKEN_INVALID);

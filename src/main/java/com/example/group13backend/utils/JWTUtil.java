@@ -33,6 +33,15 @@ public class JWTUtil {
     return jwtBuilder.setSubject(userID.toString()).claim("ses", snowflakeUtil.newId()).compact();
   }
 
+  public String getTokenFromHeader(String authorization) {
+    final var tokenSplit = authorization.split("Bearer ");
+    if (tokenSplit.length != 2) {
+      logger.error(ErrorMessage.TOKEN_INVALID);
+      return null;
+    }
+    return tokenSplit[1];
+  }
+
   public Long getUserId(String jws) {
     try {
       return Long.parseLong(jwtParser.parseClaimsJws(jws).getBody().getSubject());

@@ -44,12 +44,7 @@ public class SessionService {
   }
 
   public Long getSessionId(String authorization) {
-    final var tokenSplit = authorization.split("Bearer ");
-    if (tokenSplit.length != 2) {
-      logger.error(ErrorMessage.TOKEN_INVALID);
-      return null;
-    }
-    final var token = tokenSplit[1];
+    final var token = jwtUtil.getTokenFromHeader(authorization);
     final var id = jwtUtil.getSessionId(token);
     if (id == null) {
       logger.error(ErrorMessage.TOKEN_INVALID);
