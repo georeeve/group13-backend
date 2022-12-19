@@ -6,6 +6,7 @@ import com.example.group13backend.db.repository.CategoryRepository;
 import com.example.group13backend.db.repository.ItemRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class CategoryService {
   private final ItemRepository itemRepository;
   private final Logger logger;
 
+  @Autowired
   public CategoryService(
       CategoryRepository categoryRepository, ItemRepository itemRepository, Logger logger) {
     this.categoryRepository = categoryRepository;

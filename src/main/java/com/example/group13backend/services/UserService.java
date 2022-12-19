@@ -7,14 +7,16 @@ import com.example.group13backend.logging.Logger;
 import com.example.group13backend.utils.Argon2Util;
 import com.example.group13backend.utils.JWTUtil;
 import com.example.group13backend.utils.SnowflakeUtil;
-import java.util.Objects;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 public class UserService {
+  private final DisallowedSessionService disallowedSessionService;
   private final UserRepository userRepository;
   private final Argon2Util argon2Util;
   private final SnowflakeUtil snowflakeUtil;
@@ -23,11 +25,13 @@ public class UserService {
 
   @Autowired
   public UserService(
+      DisallowedSessionService disallowedSessionService,
       UserRepository userRepository,
       Argon2Util argon2Util,
       SnowflakeUtil snowflakeUtil,
       JWTUtil jwtUtil,
       Logger logger) {
+    this.disallowedSessionService = disallowedSessionService;
     this.userRepository = userRepository;
     this.argon2Util = argon2Util;
     this.snowflakeUtil = snowflakeUtil;
@@ -42,7 +46,12 @@ public class UserService {
       return null;
     }
     final var token = tokenSplit[1];
-    final var id = jwtUtil.verify(token);
+    final var sessionId = jwtUtil.getSessionId(token);
+    if (disallowedSessionService.checkDisallowedSession(sessionId)) {
+      logger.error(ErrorMessage.TOKEN_INVALID);
+      return null;
+    }
+    final var id = jwtUtil.getUserId(token);
     if (id == null) {
       logger.error(ErrorMessage.TOKEN_INVALID);
       return null;
