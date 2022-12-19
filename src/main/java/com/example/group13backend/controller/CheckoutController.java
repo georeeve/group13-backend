@@ -5,12 +5,11 @@ import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
 import com.example.group13backend.services.ItemService;
 import com.example.group13backend.services.UserService;
+import java.util.Map;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @ApiMapping("checkout")

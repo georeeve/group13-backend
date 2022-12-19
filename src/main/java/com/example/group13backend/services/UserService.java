@@ -7,12 +7,11 @@ import com.example.group13backend.logging.Logger;
 import com.example.group13backend.utils.Argon2Util;
 import com.example.group13backend.utils.JWTUtil;
 import com.example.group13backend.utils.SnowflakeUtil;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserService {

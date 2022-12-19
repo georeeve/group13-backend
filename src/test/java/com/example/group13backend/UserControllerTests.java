@@ -1,5 +1,8 @@
 package com.example.group13backend;
 
+import static java.time.Month.JANUARY;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.example.group13backend.controller.UserController;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
@@ -7,6 +10,7 @@ import com.example.group13backend.testutils.TestUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +21,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.time.LocalDate;
-
-import static java.time.Month.JANUARY;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTests {

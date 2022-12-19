@@ -6,10 +6,9 @@ import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
 import com.example.group13backend.utils.Argon2Util;
 import com.example.group13backend.utils.JWTUtil;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class SessionService {
