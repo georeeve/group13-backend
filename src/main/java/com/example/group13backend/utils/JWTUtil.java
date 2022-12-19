@@ -6,10 +6,9 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Service;
-
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JWTUtil {

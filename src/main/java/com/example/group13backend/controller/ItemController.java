@@ -3,10 +3,9 @@ package com.example.group13backend.controller;
 import com.example.group13backend.annotations.ApiMapping;
 import com.example.group13backend.db.models.Item;
 import com.example.group13backend.services.ItemService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @ApiMapping("items")

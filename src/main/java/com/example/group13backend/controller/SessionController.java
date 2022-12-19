@@ -5,10 +5,9 @@ import com.example.group13backend.db.models.DisallowedSession;
 import com.example.group13backend.db.models.User;
 import com.example.group13backend.services.DisallowedSessionService;
 import com.example.group13backend.services.SessionService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Collections;
 import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ApiMapping("session")
