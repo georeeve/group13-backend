@@ -1,6 +1,8 @@
 package com.example.group13backend.services;
 
+import com.example.group13backend.db.models.Session;
 import com.example.group13backend.db.models.User;
+import com.example.group13backend.db.repository.SessionRepository;
 import com.example.group13backend.db.repository.UserRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
@@ -15,8 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
-  private final DisallowedSessionService disallowedSessionService;
   private final UserRepository userRepository;
+  private final SessionRepository sessionRepository;
+  private final SessionService sessionService;
   private final Argon2Util argon2Util;
   private final SnowflakeUtil snowflakeUtil;
   private final JWTUtil jwtUtil;
@@ -24,14 +27,16 @@ public class UserService {
 
   @Autowired
   public UserService(
-      DisallowedSessionService disallowedSessionService,
       UserRepository userRepository,
+      SessionRepository sessionRepository,
+      SessionService sessionService,
       Argon2Util argon2Util,
       SnowflakeUtil snowflakeUtil,
       JWTUtil jwtUtil,
       Logger logger) {
-    this.disallowedSessionService = disallowedSessionService;
     this.userRepository = userRepository;
+    this.sessionRepository = sessionRepository;
+    this.sessionService = sessionService;
     this.argon2Util = argon2Util;
     this.snowflakeUtil = snowflakeUtil;
     this.jwtUtil = jwtUtil;
@@ -41,11 +46,7 @@ public class UserService {
   public User getCurrentUser(String authorization) {
     final var token = jwtUtil.getTokenFromHeader(authorization);
     final var sessionId = jwtUtil.getSessionId(token);
-    if (disallowedSessionService.checkDisallowedSession(sessionId)) {
-      logger.error(ErrorMessage.TOKEN_INVALID);
-      return null;
-    }
-    final var id = jwtUtil.getUserId(token);
+    final var id = sessionService.getUserIdFromSessionId(sessionId);
     if (id == null) {
       logger.error(ErrorMessage.TOKEN_INVALID);
       return null;
@@ -85,9 +86,11 @@ public class UserService {
     // TODO: Add dob validation
     user.setPassword(argon2Util.hash(user.getPassword()));
     user.setId(snowflakeUtil.newId());
-
     userRepository.save(user);
-    return jwtUtil.sign(user.getId());
+
+    final var sessionId = snowflakeUtil.newId();
+    sessionRepository.save(new Session(sessionId, user.getId()));
+    return jwtUtil.sign(sessionId);
   }
 
   public void deleteUserById(Long id) {
