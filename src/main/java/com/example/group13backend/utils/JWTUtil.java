@@ -16,20 +16,18 @@ public class JWTUtil {
   private final JwtBuilder jwtBuilder;
   private final JwtParser jwtParser;
   private final Logger logger;
-  private final SnowflakeUtil snowflakeUtil;
 
-  public JWTUtil(KeyUtil keyUtil, Logger logger, SnowflakeUtil snowflakeUtil) {
+  public JWTUtil(KeyUtil keyUtil, Logger logger) {
     PrivateKey privateKey = keyUtil.getPrivateKey();
     PublicKey publicKey = keyUtil.getPublicKey();
 
     this.jwtBuilder = Jwts.builder().signWith(privateKey, SignatureAlgorithm.ES256);
     this.jwtParser = Jwts.parserBuilder().setSigningKey(publicKey).build();
     this.logger = logger;
-    this.snowflakeUtil = snowflakeUtil;
   }
 
-  public String sign(Long userID) {
-    return jwtBuilder.setSubject(userID.toString()).claim("ses", snowflakeUtil.newId()).compact();
+  public String sign(Long sessionId) {
+    return jwtBuilder.claim("ses", sessionId).compact();
   }
 
   public String getTokenFromHeader(String authorization) {
@@ -39,15 +37,6 @@ public class JWTUtil {
       return null;
     }
     return tokenSplit[1];
-  }
-
-  public Long getUserId(String jws) {
-    try {
-      return Long.parseLong(jwtParser.parseClaimsJws(jws).getBody().getSubject());
-    } catch (Exception exception) {
-      logger.error(ErrorMessage.TOKEN_INVALID);
-      return null;
-    }
   }
 
   public Long getSessionId(String jws) {
