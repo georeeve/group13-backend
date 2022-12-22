@@ -4,15 +4,16 @@ import com.example.group13backend.db.models.User;
 import com.example.group13backend.db.repository.UserRepository;
 import com.example.group13backend.logging.ErrorMessage;
 import com.example.group13backend.logging.Logger;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AdminUserService {
@@ -96,6 +97,25 @@ public class AdminUserService {
 
       if (newUser.getDob() != null && !Objects.equals(oldUser.getDob(), newUser.getDob())) {
         oldUser.setDob(newUser.getDob());
+      }
+
+      if (newUser.getAddressLine1() != null
+          && !Objects.equals(oldUser.getAddressLine1(), newUser.getAddressLine1())) {
+        oldUser.setAddressLine1(newUser.getAddressLine1());
+      }
+
+      if (newUser.getAddressLine2() != null
+          && !Objects.equals(oldUser.getAddressLine2(), newUser.getAddressLine2())) {
+        oldUser.setAddressLine2(newUser.getAddressLine2());
+      }
+
+      if (newUser.getCity() != null && !Objects.equals(oldUser.getCity(), newUser.getCity())) {
+        oldUser.setCity(newUser.getCity());
+      }
+
+      if (newUser.getPostCode() != null
+          && !Objects.equals(oldUser.getPostCode(), newUser.getPostCode())) {
+        oldUser.setPostCode(newUser.getPostCode());
       }
       return;
     }
