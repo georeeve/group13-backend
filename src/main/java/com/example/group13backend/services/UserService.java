@@ -9,11 +9,12 @@ import com.example.group13backend.logging.Logger;
 import com.example.group13backend.utils.Argon2Util;
 import com.example.group13backend.utils.JWTUtil;
 import com.example.group13backend.utils.SnowflakeUtil;
-import java.util.Objects;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -109,33 +110,6 @@ public class UserService {
       return;
     }
 
-    //        if (newUser.getFirstName() != null) {
-    //            if (newUser.getFirstName().length() == 0) {
-    //                logger.error(ErrorMessage.NAME_INVALID);
-    //                return;
-    //            }
-    //        }
-    //        if (newUser.getLastName() != null) {
-    //            if (newUser.getLastName().length() == 0) {
-    //                logger.error(ErrorMessage.NAME_INVALID);
-    //                return;
-    //            }
-    //        }
-
-    //        if (newUser.getEmail() != null) {
-    //            if (!newUser.getEmail().contains("@")) {
-    //                logger.error(ErrorMessage.EMAIL_INVALID);
-    //                return;
-    //            }
-    //        }
-
-    //        if (newUser.getPassword() != null) {
-    //            if (newUser.getPassword().length() <= 8) {
-    //                logger.error(ErrorMessage.PASSWORD_TOO_SHORT);
-    //                return;
-    //            }
-    //        }
-
     User oldUser = userOptional.get();
 
     if (newUser.getFirstName() != null
@@ -159,6 +133,29 @@ public class UserService {
     if (newUser.getPassword() != null
         && !argon2Util.verify(newUser.getPassword(), oldUser.getPassword())) {
       oldUser.setPassword(argon2Util.hash(newUser.getPassword()));
+    }
+
+    if (newUser.getDob() != null && !Objects.equals(oldUser.getDob(), newUser.getDob())) {
+      oldUser.setDob(newUser.getDob());
+    }
+
+    if (newUser.getAddressLine1() != null
+        && !Objects.equals(oldUser.getAddressLine1(), newUser.getAddressLine1())) {
+      oldUser.setAddressLine1(newUser.getAddressLine1());
+    }
+
+    if (newUser.getAddressLine2() != null
+        && !Objects.equals(oldUser.getAddressLine2(), newUser.getAddressLine2())) {
+      oldUser.setAddressLine2(newUser.getAddressLine2());
+    }
+
+    if (newUser.getCity() != null && !Objects.equals(oldUser.getCity(), newUser.getCity())) {
+      oldUser.setCity(newUser.getCity());
+    }
+
+    if (newUser.getPostCode() != null
+        && !Objects.equals(oldUser.getPostCode(), newUser.getPostCode())) {
+      oldUser.setPostCode(newUser.getPostCode());
     }
   }
 }
